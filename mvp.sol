@@ -12,7 +12,7 @@ pragma solidity ^0.7.6;
 
 contract Vend {
    
-   // store on blockchain the creator of the contract (the parent) and the designated user (the child)
+   // store on blockchain the creator of the contract and the designated user
    address public creator;
    address public user;
    constructor(address addr) {
@@ -28,14 +28,16 @@ contract Vend {
         if(msg.sender != creator) {
             revert("Only the creator can add Vendors");
         }
+        
         approvedAddresses[addr] = true;
     }
     
-    // adds money to wallet - check if you're the parent/creator and that the amount sent is above the minimum
+    // adds money to wallet - check if you're the creator and that the amount sent is above the minimum
     function addMoney() external payable {
         if(msg.sender != creator) {
             revert("Only the creator can add money");
         }
+
         if(msg.value < 1000) {
             revert("Too small, minimum amount is 1000 wei");
         }
@@ -47,7 +49,7 @@ contract Vend {
     }
     
     
-    //sends select amount of ether from contract to vendor - check if you're the child/user, the address is approved, and there's enough money
+    //sends select amount of ether from contract to vendor - check if you're the designated user, the address is approved, and there's enough money
     function sendEther(address payable destination, uint amountInWei) external {
         if(msg.sender != user) {
             revert("Only the specific user can pay others");
