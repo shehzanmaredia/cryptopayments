@@ -59,6 +59,7 @@ contract Vend {
             revert("This is not an approved address");
         }
 
+        //balance too low
         if (address(this).balance < amountInWei) {
             revert("Balance too low"); 
         }
